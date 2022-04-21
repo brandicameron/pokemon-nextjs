@@ -1,17 +1,29 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
-export default function Home() {
-  const [pokemon, setPokemon] = useState([]);
+// server side rendering code
+export async function getServerSideProps() {
+  const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
 
-  useEffect(() => {
-    async function getPokemon() {
-      const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
-      setPokemon(await resp.json());
-    }
-    getPokemon();
-  }, []);
+  return {
+    props: {
+      pokemon: await resp.json(),
+    },
+  };
+}
+
+export default function Home({ pokemon }) {
+  // client side rendering code
+  // const [pokemon, setPokemon] = useState([]);
+
+  // useEffect(() => {
+  //   async function getPokemon() {
+  //     const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
+  //     setPokemon(await resp.json());
+  //   }
+  //   getPokemon();
+  // }, []);
 
   return (
     <div>
