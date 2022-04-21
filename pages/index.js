@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import Head from 'next/head';
 
-// server side rendering code
-export async function getServerSideProps() {
+// static code
+export async function getStaticProps() {
   const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
 
   return {
@@ -12,6 +12,17 @@ export async function getServerSideProps() {
     },
   };
 }
+
+// server side rendering code
+// export async function getServerSideProps() {
+//   const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
+
+//   return {
+//     props: {
+//       pokemon: await resp.json(),
+//     },
+//   };
+// }
 
 export default function Home({ pokemon }) {
   // client side rendering code

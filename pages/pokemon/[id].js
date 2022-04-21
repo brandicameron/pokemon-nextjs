@@ -4,8 +4,20 @@ import Head from 'next/head';
 // import { useRouter } from 'next/router';
 import styles from '../../styles/Details.module.css';
 
-// server side rendering code
-export async function getServerSideProps({ params }) {
+// static site code
+export async function getStaticPaths() {
+  const resp = await fetch('https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json');
+  const pokemon = await resp.json();
+
+  return {
+    paths: pokemon.map((pokemon) => ({
+      params: { id: pokemon.id.toString() },
+    })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
   const resp = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
   );
@@ -16,6 +28,19 @@ export async function getServerSideProps({ params }) {
     },
   };
 }
+
+// server side rendering code
+// export async function getServerSideProps({ params }) {
+//   const resp = await fetch(
+//     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
+//   );
+
+//   return {
+//     props: {
+//       pokemon: await resp.json(),
+//     },
+//   };
+// }
 
 export default function Details({ pokemon }) {
   // client side rendering code
